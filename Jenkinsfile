@@ -6,7 +6,9 @@ pipeline {
                 label  'build'
             }
             steps {
-                sleep '5'
+                withMaven(maven: 'M3', mavenLocalRepo: '.repository') {
+                    sh "mvn clean install"
+                }
             }
         }
         stage('static-analysis') {
