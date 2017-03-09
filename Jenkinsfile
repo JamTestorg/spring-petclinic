@@ -9,6 +9,7 @@ pipeline {
                 withMaven(maven: 'M3', mavenLocalRepo: '.repository') {
                     sh "mvn clean install"
                 }
+                stash name: "jars", includes: "target/*.jar"
             }
         }
         stage('static-analysis') {
@@ -16,22 +17,21 @@ pipeline {
                 label  'build'
             }
             steps {
-                sleep '5'
+
             }
         }
         stage('') {
             steps {
                 parallel(
                         "chrome": {
-                            sleep '5'
+
 
                         },
                         "edge": {
-                            sleep '5'
+
 
                         },
                         "firefox": {
-                            sleep '5'
 
                         }
                 )
@@ -39,7 +39,8 @@ pipeline {
         }
         stage('staging') {
             steps {
-                sleep '5'
+                unstash "jars"
+                sh "ls -la target"
             }
         }
         stage('approval') {
@@ -49,7 +50,8 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                sleep '5'
+                unstash "jars"
+                sh "ls -la target"
             }
         }
     }
