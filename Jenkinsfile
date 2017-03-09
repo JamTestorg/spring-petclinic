@@ -2,11 +2,17 @@ pipeline {
     agent any
     stages {
         stage('build & unit tests') {
+            agent {
+                label : 'build'
+            }
             steps {
                 sleep '5'
             }
         }
         stage('static-analysis') {
+            agent {
+                label : 'build'
+            }
             steps {
                 sleep '5'
             }
